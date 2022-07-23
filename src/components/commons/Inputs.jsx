@@ -8,3 +8,10 @@ export const GrayRoundInput=styled.input`
   margin-top: 4px;
   margin-bottom: 4px;
 `
+export const GrayInput=styled.input`
+  
+  width: 243px;
+  height: 29px;
+  background: #FFFFFF;
+  border: 1px solid #C4C4C4;
+`

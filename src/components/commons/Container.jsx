@@ -6,6 +6,6 @@ export const RowContainer=styled(Flex)`
     align-items: center;
 `
 export const ColContainer=styled(Flex)`
-    align-items: center;
     flex-direction: column;
+    align-items: center;
 `

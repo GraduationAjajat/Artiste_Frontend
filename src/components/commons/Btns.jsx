@@ -20,3 +20,10 @@ export const BlackBtn=styled.button`
     font-weight: 500;
     font-size: 22px;
 `
+export const ViewBtn=styled.button`
+    width: 49px;
+    height: 25px;
+    background-color: ${props => props.color? props.color : "#FFFFFF"};
+    border: 1px solid #C4C4C4;
+    border-radius: 5px;
+`
