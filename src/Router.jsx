@@ -5,6 +5,7 @@ import SignUp from './pages/SignUp';
 import Main from './pages/Main';
 import Gallery from './pages/Gallery/Gallery';
 import Content from './pages/GalleryContent/Content';
+import MyPage from './pages/MyPage/MyPage';
 const Router = () => {
   return (
     <Routes>
@@ -13,6 +14,7 @@ const Router = () => {
         <Route path="/signup" element={<SignUp/>}/>
         <Route path='/gallery' element={<Gallery/>}/>
         <Route path='gallery/content/:id' element={<Content/>}/>
+        <Route path='/mypage' element={<MyPage/>}/>
     </Routes>
   )
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { RowContainer } from './commons/Container'
+import { Link } from 'react-router-dom'
 const Header = () => {
   return (
    <HeaderContainer>
@@ -8,7 +9,9 @@ const Header = () => {
             <Logo>Artiste</Logo>
             <Btns>
                 <div>ARTISTE?</div>
-                <div>ART GALLERY</div>
+                <Link to="/gallery" style={{textDecoration:"none", color:"#666666"}}>
+                    <div>ART GALLERY</div>
+                </Link>
                 <div>PAINT ART</div>
                 <div>MY PAGE</div>
             </Btns>
