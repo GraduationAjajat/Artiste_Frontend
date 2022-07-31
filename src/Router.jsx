@@ -6,6 +6,7 @@ import Main from './pages/Main';
 import Gallery from './pages/Gallery/Gallery';
 import Content from './pages/GalleryContent/Content';
 import MyPage from './pages/MyPage/MyPage';
+import AdminPage from './pages/AdminPage/AdminPage';
 const Router = () => {
   return (
     <Routes>
@@ -15,6 +16,7 @@ const Router = () => {
         <Route path='/gallery' element={<Gallery/>}/>
         <Route path='gallery/content/:id' element={<Content/>}/>
         <Route path='/mypage' element={<MyPage/>}/>
+        <Route path='/admin' element={<AdminPage/>}/>
     </Routes>
   )
 }
