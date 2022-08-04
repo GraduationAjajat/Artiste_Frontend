@@ -27,3 +27,12 @@ export const ViewBtn=styled.button`
     border: 1px solid #C4C4C4;
     border-radius: 5px;
 `
+export const BorderBtn=styled.button`
+    border: 1px solid #111111;
+    border-radius: 8px;
+    height: 40px;
+    width: ${props=> props.width};
+    background: ${props=> props.background ? props.background : "#FFFFFF"};
+    color: ${props => props.color? props.color : "#000000"};
+
+`

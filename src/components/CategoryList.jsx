@@ -1,0 +1,18 @@
+export const CategoryList=[
+    {id:"0",
+    name: "풍경"},
+    {id:"1",
+    name: "인물"},
+    {id:"2",
+    name: "꽃"},
+    {id:"3",
+    name: "정물"},
+    {id:"4",
+    name: "모네"},
+    {id:"5",
+    name: "고흐"},
+    {id:"6",
+    name: "바로크"},
+    {id:"7",
+    name: "르네상스"},
+];

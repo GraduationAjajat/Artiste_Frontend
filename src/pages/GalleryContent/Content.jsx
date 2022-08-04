@@ -7,13 +7,13 @@ import { BlackText } from '../../components/commons/Font'
 import Content2D from './Content2D'
 import Content3D from './Content3D'
 import Comment from './Comment'
+import { Link } from 'react-router-dom'
 const Content = () => {
-  console.log(useParams().id)
-
     const [view, setView]=useState('2D');
     const [color1, setColor1]=useState('c4c4c4');
     const [color2, setColor2]=useState('');
     const [like, setLike]=useState(false)
+    const id="toquf0797"
     const ClickRadio=(e)=>{
         console.log(e.target.value);
         setView(e.target.value);
@@ -33,7 +33,9 @@ const Content = () => {
         <HeaderContainer>
             <HeaderContent>
                 <div style={{fontSize:'36px', }}>꿈 꾸는 자연</div>
-                <div>toquf0797</div>
+                <Link to={`/profile/${id}`} style={{textDecoration:"none"}}>
+                <div>{id}</div>
+                </Link> 
             </HeaderContent>
         </HeaderContainer>
         <ContentContainer>
