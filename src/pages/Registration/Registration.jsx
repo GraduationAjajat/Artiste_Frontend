@@ -10,7 +10,8 @@ const Registration = () => {
     
     const [checkedList, setCheckedList]=useState([false, false,false, false,false, false,false, false ]);
     
-   
+   const [component, setComponent]=useState([<ImageRegister/>]);
+
     const onCheckList=(item)=>{
         if(checkedList[item.id]==false){
             checkedList[item.id]=true;
@@ -20,6 +21,13 @@ const Registration = () => {
         }
         setCheckedList([...checkedList]);
         console.log(checkedList)
+    }
+    const addComponent=()=>{
+        component.push(<ImageRegister/>);
+        setComponent([...component]);
+    }
+    const renderComponent=()=>{
+        return component;
     }
   return (
     <RegistrationContainer>
@@ -63,9 +71,9 @@ const Registration = () => {
                         <GrayText>작품 등록 ( 최대 10개 )</GrayText>
                         <div style={{fontSize:" 13px ", color:"#C4C4C4"}}> 변환할 사진과 원하는 화풍 사진을 추가한 후, 전시될 작품을 미리보기로 확인하세요!</div>
                     </Content>
-                    <ImageRegister/>
-                    
-                    <AddBtn src='../../imgs/AddBtn.svg'/>
+                    {renderComponent()}
+                   
+                    <AddBtn src='../../imgs/AddBtn.svg' onClick={addComponent}/>
                     <RegisterBtn>전시회 신청</RegisterBtn>
             
                 </ColContainer>
@@ -122,5 +130,5 @@ const RegisterBtn=styled.button`
 background: #111111;
 opacity: 0.25;
 border-radius: 32px;
-
+    color:white;
 `
