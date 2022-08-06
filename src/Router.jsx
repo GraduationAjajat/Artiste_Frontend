@@ -9,6 +9,7 @@ import MyPage from './pages/MyPage/MyPage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import Profile from './pages/Profile/Profile';
 import Registration from './pages/Registration/Registration';
+import GalleryInfo from './pages/MyPage/GalleryInfo/GalleryInfo';
 const Router = () => {
   return (
     <Routes>
@@ -21,6 +22,7 @@ const Router = () => {
         <Route path='/admin' element={<AdminPage/>}/>
         <Route path='/profile/:id' element={<Profile/>}/>
         <Route path="/registration" element={<Registration/>}/>
+        <Route path='/gallery/:id' element={<GalleryInfo/>}/>
     </Routes>
   )
 }
