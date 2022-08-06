@@ -10,6 +10,7 @@ import AdminPage from './pages/AdminPage/AdminPage';
 import Profile from './pages/Profile/Profile';
 import Registration from './pages/Registration/Registration';
 import GalleryInfo from './pages/MyPage/GalleryInfo/GalleryInfo';
+import Qna from './Qna';
 const Router = () => {
   return (
     <Routes>
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path='/profile/:id' element={<Profile/>}/>
         <Route path="/registration" element={<Registration/>}/>
         <Route path='/gallery/:id' element={<GalleryInfo/>}/>
+        <Route path='/qna' element={<Qna/>}/>
     </Routes>
   )
 }
