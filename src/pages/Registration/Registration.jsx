@@ -80,7 +80,9 @@ const Registration = () => {
                 
             </ContentContainer>
         </Container>
-       
+       <BackgroundImgContainer>
+           
+       </BackgroundImgContainer>
        
        
     </RegistrationContainer>
@@ -90,7 +92,8 @@ const Registration = () => {
 export default Registration
 const RegistrationContainer=styled(RowContainer)`
     width: 100vw;
-    height: 100vh;
+    position: relative;
+   
 `
 const Container=styled(ColContainer)`
     width: 60%;
@@ -98,7 +101,7 @@ const Container=styled(ColContainer)`
 `
 const ContentContainer=styled.div`
     width: 70%;
-    
+    padding-bottom: 30px;
 `
 const ImgContainer=styled.div`
     width: 40%;
@@ -131,4 +134,17 @@ background: #111111;
 opacity: 0.25;
 border-radius: 32px;
     color:white;
+`
+const BackgroundImgContainer=styled.div`
+    height: 100%;
+    width: 40%;
+    background: url('../../imgs/registerImg.svg');
+    background-size:cover ;
+    position: absolute;
+    right: 0px;
+`
+const BackgroundImg=styled.img`
+     //width: 100%;
+  object-fit: fill;
+  //height: 100%;
 `
