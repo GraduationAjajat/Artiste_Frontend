@@ -11,6 +11,7 @@ import Profile from './pages/Profile/Profile';
 import Registration from './pages/Registration/Registration';
 import GalleryInfo from './pages/MyPage/GalleryInfo/GalleryInfo';
 import Qna from './Qna';
+import About from './pages/About';
 const Router = () => {
   return (
     <Routes>
@@ -25,6 +26,7 @@ const Router = () => {
         <Route path="/registration" element={<Registration/>}/>
         <Route path='/gallery/:id' element={<GalleryInfo/>}/>
         <Route path='/qna' element={<Qna/>}/>
+        <Route path='/about' element={<About/>}/>
     </Routes>
   )
 }

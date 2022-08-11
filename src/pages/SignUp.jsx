@@ -8,6 +8,8 @@ const SignUp = () => {
   const [sex, setSex]=useState('man')
   const [agree1, setAgree1]=useState(false);
   const [agree2, setAgree2]=useState(false);
+  const [pw, setPw]=useState('');
+  const [pwConfirm, setPwConfirm]=useState('');
   const handleClick=(e)=>{
     if (sex==='man'){
       setSex('woman');
@@ -15,7 +17,41 @@ const SignUp = () => {
       setSex('man')
     }
   }
-  
+  //오류메시지
+  const [pwMessage, setPwMessage]=useState('');
+  const [pwConfirmMessage, setPwConfirmMessage]=useState('');
+
+  //유효성 검사 
+  const [isPw, setIsPw]=useState(false);
+  const [isPwConfirm, setIsPwConfirm]=useState(false);
+  const onChangePw=(e)=>{
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
+    const pwCurrent=e.target.value;
+    setPw(pwCurrent);
+    
+      if(!passwordRegex.test(pwCurrent)){
+        setPwMessage('알파벳, 숫자, 특수문자 조합으로 8자리 이상 입력해주세요');
+        setIsPw(false);
+      }else{
+        setPwMessage('안전한 비밀번호에요');
+        setIsPw(true);
+      }
+    
+  }
+  const onChangePwConfirm=(e)=>{
+    const pwConfirmCurrent=e.target.value;
+    setPwConfirm(pwConfirmCurrent);
+ 
+      if (pw === pwConfirmCurrent){
+        setPwConfirmMessage('비밀번호가 일치합니다.');
+        setIsPwConfirm(true);
+      }else{
+        setPwConfirmMessage('비밀번호가 다릅니다. 올바르게 입력해주세요')
+        setIsPwConfirm(false);
+      }
+    
+   
+  }
   return (
     <SignUpContainer>
       <ImgContainer>
@@ -28,11 +64,13 @@ const SignUp = () => {
           <InputText>이메일</InputText>
           <GrayRoundInput/>
           <InputText>비밀번호</InputText>
-          <GrayRoundInput/>
-          <GrayText>알파벳, 숫자, 특수문자 조합으로 8자리 이상 입력해주세요</GrayText>
+           
+              <GrayRoundInput onChange={(e)=>onChangePw(e)} type={'password'}/>
+          
+          <GrayText>{pwMessage}</GrayText>
           <InputText>비밀번호 확인</InputText>
-          <GrayRoundInput/>
-          <GrayText>알파벳, 숫자, 특수문자 조합으로 8자리 이상 입력해주세요</GrayText>
+          <GrayRoundInput onChange={(e)=>onChangePwConfirm(e)} type={'password'}/>
+          <GrayText>{pwConfirmMessage}</GrayText>
           <InputText>이름</InputText>
           <GrayRoundInput/>
           <InputText>생년월일</InputText>
