@@ -5,8 +5,6 @@ import { OrbitControls } from "../../../node_modules/three/examples/jsm/controls
 const Content3D = () => {
 
   const mount=useRef(null);
-  const controls = useRef(null)
-  const [isAnimating, setAnimating] = useState(true)
 
   useEffect(() => {
     let width = mount.current.clientWidth
@@ -22,11 +20,7 @@ const Content3D = () => {
     const material = new THREE.MeshBasicMaterial({ color: 0xff00ff , map: textureBaseColor})
     const cube = new THREE.Mesh(geometry, material)
 
-    //orbitControl
-    const controls=new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;//더 부드럽게
-    controls.update();
-
+    
 
     //빛
     const directionalLight=new THREE.DirectionalLight(0xffffff,1);
@@ -48,16 +42,30 @@ const Content3D = () => {
     scene.add(cube)
     renderer.setSize(width, height)
 
+    //orbitControl
+    const controls=new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;//더 부드럽게
+    controls.rotateSpeed = 0.8; // 마우스로 카메라를 회전시킬 속도입니다. 기본값(Float)은 1입니다.
+    controls.panSpeed =0.5; // 좌우 이동 속도 입니다. 기본값(Float)은 1입니다.
+    controls.minDistance = 2; // 어디까지 줌인 가능한지
+    controls.maxDistance = 8; // 어디까지 줌아웃 가능한지
+    controls.maxPolarAngle = Math.PI / 2.1;	// 카메라 하단 각도
+    controls.minPolarAngle = Math.PI / 10;	// 카메라 상단 각도
+    controls.addEventListener ( 'change', function(){ //pan으로도 바닥 아래로 안내려가게
+      this.target.y = 0;
+    })
+
     const renderScene = () => {
       renderer.render(scene, camera)
-      window.requestAnimationFrame(renderScene)
     }
-    /*const animate = () => {
-      cube.rotation.x += 0.01
-      cube.rotation.y += 0.01
-      renderScene()
+    const animate = () => {
+      //cube.rotation.x += 0.01
+      //cube.rotation.y += 0.01
       window.requestAnimationFrame(animate)
-    }*/
+      renderScene()
+      controls.update();
+      
+    }
     const handleResize = () => {
       width = mount.current.clientWidth
       height = mount.current.clientHeight
@@ -72,7 +80,7 @@ const Content3D = () => {
     window.addEventListener('resize', handleResize)
     
     //start();
-    requestAnimationFrame(renderScene);
+    requestAnimationFrame(animate);
    
     
     return () => {
