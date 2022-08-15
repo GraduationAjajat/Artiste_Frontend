@@ -61,7 +61,10 @@ const Content = () => {
               <BlackText weight="500" size="20px">좋아요</BlackText>
             </RowContainer>
           </RowContainer>
+
           {view==='2D'?<Content2D/> : <Content3D/>}
+          
+          
           <Text>
             글 내용
           </Text>    
