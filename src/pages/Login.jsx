@@ -1,10 +1,27 @@
-import React from 'react'
+import React , {useState} from 'react'
 import styled from 'styled-components'
 import { ColContainer, RowContainer } from '../components/commons/Container'
 import { BlackText, GrayText } from '../components/commons/Font'
 import { GrayRoundBtn } from '../components/commons/Btns'
 import { GrayRoundInput } from '../components/commons/Inputs'
+import axios from 'axios'
 const Login = () => {
+  const [id, setId]=useState('');
+  const [pw, setPw]=useState('');
+  const onSubmit=(event)=>{
+    event.preventDefault();
+    axios.post('/api/v1/user/login', {
+      email: id,
+      password: pw,
+    })
+    .then((res)=>{
+      console.log(res.data);
+      localStorage.setItem("token", res.data.accessToken);
+    })
+    .catch((err)=>
+      console.log(err)
+    )
+  }
   return (
     <LoginContainer>
       <ImgContainer>
@@ -14,15 +31,15 @@ const Login = () => {
         <BlackText size={"32px"} weight={500}>로그인</BlackText>
         <Form>
           <GrayText>이메일</GrayText>
-          <GrayRoundInput/>
+          <GrayRoundInput value={id} onChange={(e)=>setId(e.target.value)}/>
           <GrayText>비밀번호</GrayText>
-          <GrayRoundInput/>
+          <GrayRoundInput value={pw} onChange={(e)=>setPw(e.target.value)}/>
           <Search>
             <div>아이디 찾기</div>
             <div>비밀번호 찾기</div>
             <div>회원가입</div>
           </Search>
-          <GrayRoundBtn>로그인</GrayRoundBtn>
+          <GrayRoundBtn onClick={onSubmit}>로그인</GrayRoundBtn>
         </Form>
       </Content>
     </LoginContainer>

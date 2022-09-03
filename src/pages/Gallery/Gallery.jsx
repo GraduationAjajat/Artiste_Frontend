@@ -1,9 +1,12 @@
 import React, {useState}from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 import { RowContainer,ColContainer } from '../../components/commons/Container'
 import { GrayText } from '../../components/commons/Font'
 import { GrayInput } from '../../components/commons/Inputs'
 import Grid from './Grid'
+
 const Gallery = () => {
     const radios=['최신순', '조회순', '좋아요순'];
 
@@ -12,6 +15,19 @@ const Gallery = () => {
         console.log(e.target.value);
         setSort(e.target.value);
     }
+    
+    const token=localStorage.getItem("token");
+    useEffect(()=>{
+        axios.get('/api/v1/exhibition',{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((res)=>{
+            console.log(res.data);
+        })
+        
+    },[])
 
   return (
     <ColContainer>
