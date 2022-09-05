@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { RowContainer } from './commons/Container'
 import { Link } from 'react-router-dom'
 const Header = () => {
+    const token=localStorage.getItem("token");
+
   return (
    <HeaderContainer>
        <RowContainer>
@@ -16,10 +18,24 @@ const Header = () => {
                 <div>MY PAGE</div>
             </Btns>
        </RowContainer>
-       <LoginBtns>
-         <Btn>Login</Btn>
-         <Btn>Sign Up</Btn>
-       </LoginBtns>
+       {
+        token ? 
+        <Link to="/mypage">
+            <Btn>MyPage</Btn>        
+        </Link>
+
+        :
+        <LoginBtns>
+            <Link to="/login">
+                <Btn>Login</Btn>            
+            </Link>
+            <Link to="/signup">
+                <Btn>Sign Up</Btn>
+            </Link>
+            
+        </LoginBtns>
+       }
+      
    </HeaderContainer>
   )
 }
