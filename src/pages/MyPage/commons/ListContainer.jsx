@@ -5,51 +5,35 @@ import { ColContainer, RowContainer } from '../../../components/commons/Containe
 import { BlackText } from '../../../components/commons/Font'
 import { Line } from '../../../components/commons/Line'
 
-const ListContainer = () => {
+const ListContainer = ({contents}) => {
   return (
     <ColContainer>
       <MyGalleryContainer>
-        <ContentContainer>
-        <Img src='../../imgs/sampleImg.png'></Img>   
-            <Content>
-              <LeftSection>
-                  <div>
-                      <BlackText weight={"700"} size={"20px"}>꿈 속의 자연</BlackText>
-                      <BlackText weight={"500"} size={"15px"}>toquf0797</BlackText>
-                  </div>
-              </LeftSection>
-              <RightSection>
-                      <BlackText weight={"500"} size={"15px"}>2022.06.29</BlackText>
-                      <RowContainer>
-                                  <img src='../../imgs/heart.svg'></img>
-                                  <Num>13</Num>
-                                  <img src='../../imgs/comment.svg'></img>
-                                  <Num>7</Num>
-                        </RowContainer>
-              </RightSection>
-            </Content>
-        </ContentContainer>
-        <Line/>
-        <ContentContainer>
-        <Img src='../../imgs/sampleImg.png'></Img>   
-            <Content>
-              <LeftSection>
-                  <div>
-                      <BlackText weight={"700"} size={"20px"}>꿈 속의 자연</BlackText>
-                      <BlackText weight={"500"} size={"15px"}>toquf0797</BlackText>
-                  </div>
-              </LeftSection>
-              <RightSection>
-                      <BlackText weight={"500"} size={"15px"}>2022.06.29</BlackText>
-                      <RowContainer>
-                                  <img src='../../imgs/heart.svg'></img>
-                                  <Num>13</Num>
-                                  <img src='../../imgs/comment.svg'></img>
-                                  <Num>7</Num>
-                        </RowContainer>
-              </RightSection>
-            </Content>
-        </ContentContainer>
+        {contents.map((content)=>(
+        <>
+          <ContentContainer>
+          <Img src={content.exhibitionThumbnail}></Img>   
+              <Content>
+                <LeftSection>
+                    <div>
+                        <BlackText weight={"700"} size={"20px"}>{content.exhibitionName}</BlackText>
+                        <BlackText weight={"500"} size={"15px"}>{content.exhibitionArtistName}</BlackText>
+                    </div>
+                </LeftSection>
+                <RightSection>
+                        <BlackText weight={"500"} size={"15px"}>{content.exhibitionStartDate}</BlackText>
+                        <RowContainer>
+                                    <img src='../../imgs/heart.svg'></img>
+                                    <Num>{content.scrapCount}</Num>
+                                    <img src='../../imgs/comment.svg'></img>
+                                    <Num>{content.commentCount}</Num>
+                          </RowContainer>
+                </RightSection>
+              </Content>
+          </ContentContainer>
+          <Line/>
+          </>
+        ))}
       </MyGalleryContainer>
     </ColContainer>
   )
