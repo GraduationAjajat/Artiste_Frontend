@@ -9,6 +9,7 @@ import axios from 'axios'
 
 const MyGallery = () => {
   const [contents, setContents]=useState([]);
+  
   const token=localStorage.getItem("token")
   useEffect(()=>{
     axios.get('/api/v1/exhibition/user',{
@@ -18,12 +19,12 @@ const MyGallery = () => {
   })
     .then((res)=>{
     console.log(res.data)
-    setContents(res.data)
+    setContents(res.data);
+    console.log(contents)
     })
   },[])
-  return (
+  return(
    <ListContainer contents={contents}/>
-   
   )
 }
 

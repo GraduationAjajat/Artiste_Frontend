@@ -1,22 +1,24 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BlackBtn } from '../../../components/commons/Btns'
 import { ColContainer, RowContainer } from '../../../components/commons/Container'
 import { BlackText } from '../../../components/commons/Font'
 import { Line } from '../../../components/commons/Line'
 
-const ListContainer = ({contents}) => {
+const ListContainer = ({contents, type}) => {
+  console.log(contents);
   return (
     <ColContainer>
       <MyGalleryContainer>
         {contents.map((content)=>(
         <>
           <ContentContainer>
-          <Img src={content.exhibitionThumbnail}></Img>   
+          <Img src={type === 'scrap' ? content.exhibition.exhibitionThumbnail : content.exhibitionThumbnail}></Img>   
               <Content>
                 <LeftSection>
                     <div>
-                        <BlackText weight={"700"} size={"20px"}>{content.exhibitionName}</BlackText>
+                        <BlackText weight={"700"} size={"20px"}>{ type === 'scrap' ? content.exhibition.exhibitionName : content.exhibitionName}</BlackText>
                         <BlackText weight={"500"} size={"15px"}>{content.exhibitionArtistName}</BlackText>
                     </div>
                 </LeftSection>
