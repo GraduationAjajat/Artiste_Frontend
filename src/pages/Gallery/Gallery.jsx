@@ -9,39 +9,66 @@ import Grid from './Grid'
 
 const Gallery = () => {
     const radios=['최신순', '조회순', '좋아요순'];
-
-    const [sort, setSort]=useState('최신순');
-    const ClickRadio=(e)=>{
-        console.log(e.target.value);
-        setSort(e.target.value);
-    }
+    const tags=['#풍경', '#인물', '#꽃', '#정물', '#모네', '#바로크', '#르네상스']
     
+    const [contents, setContents]=useState([]);
+
     const token=localStorage.getItem("token");
+    axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
     useEffect(()=>{
-        axios.get('/api/v1/exhibition',{
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        axios.get('/api/v1/exhibition')
+        .then((res)=>{
+            setContents(res.data);
+            console.log(res.data);
         })
+    },[])
+
+   
+    const [search, setSearch]=useState('');
+    const [tag, setTag]=useState('');
+    const [sort, setSort]=useState('최신순');
+    const [enter, setEnter]=useState(false);
+
+    const ClickRadio=(e)=>{
+        //console.log(e.target.value);
+        setSort(e.target.value);
+        onSearch();
+    }
+
+    
+    const onKeyPress=(e)=>{
+        if(e.key=='Enter'){
+           onSearch();
+        }
+    }
+    const onSearch=()=>{
+        console.log("hihi");
+        axios.get('/api/v1/exhibition/search',{
+            params:{
+                search: search,
+                sortBy: sort,
+                tags: tag,
+            }
+        },
+        )
         .then((res)=>{
             console.log(res.data);
         })
-        
-    },[])
+    }
+
+    
 
   return (
     <ColContainer>
         <GalleryContainer>
             <TopContainer>
                 <GrayText size={"32px"}>ART<br/>GALLERY</GrayText>
-                <GrayInput placeholder='전시회명을 검색해보세요!'></GrayInput>
+                <GrayInput placeholder='전시회명을 검색해보세요!' onKeyPress={onKeyPress} value={search} onChange={(e)=>setSearch(e.target.value)}></GrayInput>
             </TopContainer>
             <Tags>
-                <div>#풍경</div>
-                <div>#풍경</div>
-                <div>#풍경</div>
-                <div>#풍경</div>
-                <div>#풍경</div>
+                {tags.map((tag)=>(
+                    <div onClick={()=> {setTag(tag); onSearch();}}>{tag}</div>
+                ))}
             </Tags>
             <RadioBtns>
                 {radios.map((radio)=>(
@@ -57,7 +84,7 @@ const Gallery = () => {
                 ))}        
             </RadioBtns>
             <GridContainer>
-                <Grid/>
+                <Grid contents={contents}/>
             </GridContainer>
         </GalleryContainer>    
     </ColContainer>

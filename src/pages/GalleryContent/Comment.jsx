@@ -2,34 +2,26 @@ import React from 'react'
 import styled from 'styled-components'
 import { BlackText } from '../../components/commons/Font'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
-const Comment = () => {
+const Comment = ({comments}) => {
+    console.log(comments);
   return (
     <CommentContainer>
         <Title>
         <BlackText size="26px">comment</BlackText>
         </Title>
         <Content>
-            <RowContainer style={{gap:"20px"}}>
-                <Img src='../../imgs/profileSample.svg'/>
-                <div>
-                    <BlackText size="20px">monet</BlackText>
-                    <BlackText size="20px">댓글 내용</BlackText>
-                </div>
-            </RowContainer>
-            <RowContainer style={{gap:"20px"}}>
-                <Img src='../../imgs/profileSample.svg'/>
-                <div>
-                    <BlackText size="20px">monet</BlackText>
-                    <BlackText size="20px">댓글 내용</BlackText>
-                </div>
-            </RowContainer>
-            <RowContainer style={{gap:"20px"}}>
-                <Img src='../../imgs/profileSample.svg'/>
-                <div>
-                    <BlackText size="20px">monet</BlackText>
-                    <BlackText size="20px">댓글 내용</BlackText>
-                </div>
-            </RowContainer>
+            {
+                comments.map((comment)=>(
+                <RowContainer style={{gap:"20px"}}>
+                    <Img src='../../imgs/profileSample.svg'/>
+                    <div>
+                        <BlackText size="20px">{comment.user.nickname}</BlackText>
+                        <BlackText size="20px">{comment.commentContent}</BlackText>
+                    </div>
+                </RowContainer>
+                ))
+            }
+            
         </Content>
     </CommentContainer>
   )

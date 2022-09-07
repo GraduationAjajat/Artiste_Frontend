@@ -1,14 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 import { RowContainer } from '../../components/commons/Container'
-const Content2D = () => {
+const Content2D = ({artList}) => {
+  console.log(artList);
   return (
     <Container>
       <RowScrollContainer>
-        <Img src='../../imgs/sampleImg.png'></Img>
-        <Img src='../../imgs/sampleImg.png'></Img>
-        <Img src='../../imgs/sampleImg.png'></Img>
-        <Img src='../../imgs/sampleImg.png'></Img>
+        {
+          artList.map((art)=>(
+            <Img src={art.artImage}></Img>
+          ))
+        }
+        
       </RowScrollContainer>
     </Container>
   )

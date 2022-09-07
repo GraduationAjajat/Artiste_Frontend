@@ -1,29 +1,30 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
 import { BlackText } from '../../components/commons/Font'
 import { Link } from 'react-router-dom'
-const Grid = () => {
-    const contents=["1","2","3","4","5","6"]
+import axios from 'axios'
+const Grid = ({contents}) => {
+
   return (
     <ColContainer>
         <GridContainer>
             {contents.map((content)=>(
                 <CardContainer>
-                    <Link to={`content/${content}`} style={{ textDecoration: 'none' }}>
+                    <Link to={`content/${content.exhibitionId}`} style={{ textDecoration: 'none' }}>
                         <Img src='../../imgs/sampleImg.png'></Img>
                         <Content>
                         <RowContainer style={{justifyContent:"space-between"}}>
-                            <BlackText size="20px" weight="700">{content}</BlackText>
-                            <BlackText size="15px">2022.06.29</BlackText>
+                            <BlackText size="20px" weight="700">{content.exhibitionName}</BlackText>
+                            <BlackText size="15px">{content.exhibitionStartDate}</BlackText>
                         </RowContainer>
                         <RowContainer style={{justifyContent:"space-between"}}>
-                            <BlackText size="15px">toquf0797</BlackText>
+                            <BlackText size="15px">{content.exhibitionArtistName}</BlackText>
                             <RowContainer>
                                 <img src='../../imgs/heart.svg'></img>
-                                <Num>13</Num>
+                                <Num>{content.scrapCount}</Num>
                                 <img src='../../imgs/comment.svg'></img>
-                                <Num>7</Num>
+                                <Num>{content.commentCount}</Num>
                             </RowContainer>
                         </RowContainer>
                         </Content>

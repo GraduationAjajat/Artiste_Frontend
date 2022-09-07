@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
@@ -8,14 +8,20 @@ import Content2D from './Content2D'
 import Content3D from './Content3D'
 import Comment from './Comment'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+
 const Content = () => {
+
+    const params=useParams();
     const [view, setView]=useState('2D');
     const [color1, setColor1]=useState('c4c4c4');
     const [color2, setColor2]=useState('');
-    const [like, setLike]=useState(false)
-    const id="toquf0797"
+    const [like, setLike]=useState(false);
+    const [content, setContent]=useState({});
+    const [artist, setArtist]=useState({});
+    const [artList, setArtList]=useState([]);
+    const [comment, setComment]=useState([]);
     const ClickRadio=(e)=>{
-        console.log(e.target.value);
         setView(e.target.value);
         if(color1!==''){
           setColor1('');
@@ -28,14 +34,29 @@ const Content = () => {
     const ClickLike=()=>{
       setLike(!like);
     }
+    const token=localStorage.getItem("token")
+    axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
+    useEffect(()=>{
+      axios.get(`/api/v1/exhibition/${params.id}`)
+      .then((res)=>{
+          setContent(res.data);
+          setArtist(res.data.exhibitionArtist);
+          setArtList(res.data.artList);
+      })
+      axios.get(`/api/v1/comment/${params.id}`)
+      .then((res)=>{
+        console.log(res.data.data);
+        setComment(res.data.data);
+      })
+  },[])
+
   return (
     <ColContainer>
-        <HeaderContainer>
+       <HeaderContainer>
             <HeaderContent>
-                <div style={{fontSize:'36px', }}>꿈 꾸는 자연</div>
-                <Link to={`/profile/${id}`} style={{textDecoration:"none"}}>
-                <div>{id}</div>
-                </Link> 
+                <div style={{fontSize:'36px', }}>{content.exhibitionName}</div>
+            {/* 여기서 content.exhibitionArtist.ninkname이렇게 하지말고 각각 다 state로 만들면 오류 안남 */}
+          <div>{artist.nickname}</div>
             </HeaderContent>
         </HeaderContainer>
         <ContentContainer>
@@ -62,14 +83,14 @@ const Content = () => {
             </RowContainer>
           </RowContainer>
 
-          {view==='2D'?<Content2D/> : <Content3D/>}
+          {view==='2D'?<Content2D artList={artList}/> : <Content3D/>}
           
           
           <Text>
-            글 내용
+            {content.exhibitionDesc}
           </Text>    
         </ContentContainer>
-        <Comment/>
+        <Comment comments={comment}/>
     </ColContainer>
   )
 }
