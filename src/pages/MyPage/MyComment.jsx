@@ -1,46 +1,46 @@
+import axios from 'axios'
 import React from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
 import { BlackText } from '../../components/commons/Font'
 import { Line } from '../../components/commons/Line'
 
 const MyComment = () => {
+  const token=localStorage.getItem("token");
+  const [comments, setComments]=useState([]);
+  useEffect(()=>{
+    axios.get('/api/v1/comment',{
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  })
+  .then((res)=>{
+    console.log(res.data.data);
+    setComments(res.data.data);
+  })
+  },[])
   return (
     <ColContainer>
       <MyCommentContainer>
-        <CommentContainer>
-          <Left>
-            <BlackText style={{marginBottom:"15px"}}>일상 속 풍경을 모네의 화풍으로 재해석한 점이 아주 인상깊고 좋아요</BlackText>
-            <BlackText weight={"700"}>꿈 속의 자연</BlackText>
-          </Left>
-          <Right>
-            <BlackText weight={"500"} size={"15px"}>2022.06.20</BlackText>
-            <Btn>확인</Btn>
-          </Right>
-        </CommentContainer>
-        <Line/>
-        <CommentContainer>
-          <Left>
-            <BlackText style={{marginBottom:"15px"}}>일상 속 풍경을 모네의 화풍으로 재해석한 점이 아주 인상깊고 좋아요</BlackText>
-            <BlackText weight={"700"}>꿈 속의 자연</BlackText>
-          </Left>
-          <Right>
-            <BlackText weight={"500"} size={"15px"}>2022.06.20</BlackText>
-            <Btn>확인</Btn>
-          </Right>
-        </CommentContainer>
-        <Line/>
-        <CommentContainer>
-          <Left>
-            <BlackText style={{marginBottom:"15px"}}>일상 속 풍경을 모네의 화풍으로 재해석한 점이 아주 인상깊고 좋아요</BlackText>
-            <BlackText weight={"700"}>꿈 속의 자연</BlackText>
-          </Left>
-          <Right>
-            <BlackText weight={"500"} size={"15px"}>2022.06.20</BlackText>
-            <Btn>확인</Btn>
-          </Right>
-        </CommentContainer>
-        <Line/>
+        {
+          comments.map((comment)=>(
+            <>
+            <CommentContainer>
+            <Left>
+              <BlackText style={{marginBottom:"15px"}}>{comment.commentContent}</BlackText>
+              <BlackText weight={"700"}>{comment.exhibition.exhibitionName}</BlackText>
+            </Left>
+            <Right>
+              <BlackText weight={"500"} size={"15px"}>{comment.createdDate.substr(0,10)}</BlackText>
+              <Btn>확인</Btn>
+            </Right>
+          </CommentContainer>
+          <Line/>
+            </>
+          
+          ))
+        }
       </MyCommentContainer>
     </ColContainer>
     
@@ -67,10 +67,14 @@ const Right=styled(ColContainer)`
 const Btn=styled.button`
   width: 89px;
   height: 35px;
-  background: #111111;
+  background: white;
   border: 1px solid #000000;
   border-radius: 5px;
-  color: white;
+  color: black;
   font-size: 15px;
   font-weight: 500;
+  &:hover{
+    background: #111111;
+    color: white;
+  }
 `
