@@ -1,4 +1,4 @@
-import React , {useState} from 'react'
+import React , {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
 import { BlackText } from '../../components/commons/Font'
@@ -6,10 +6,15 @@ import MyComment from './MyComment'
 import MyGallery from './MyGallery'
 import EditProfile from './EditProfile'
 import Scrap from './Scrap'
-
+import axios from 'axios'
 const MyPage = () => {
     const [tab, setTab]=useState(1);
-
+    const [followerCnt, setFollowerCnt]=useState(0);
+    const [followingCnt, setFollowingCnt]=useState(0);
+    const [follower, setFollower]=useState([]);
+    const [follow, setFollow]=useState([]);
+    const [display, setDisplay]=useState(false);
+    const [display2, setDisplay2]=useState(false);
     const ClickTab=()=>{
         switch(tab){
             case 1:
@@ -22,6 +27,26 @@ const MyPage = () => {
                 return <EditProfile/>
         }
     }
+    const token=localStorage.getItem("token")
+    axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
+    useEffect(()=>{
+        axios.get('/api/v1/follow/count')
+        .then((res)=>{
+            console.log(res.data);
+            setFollowerCnt(res.data.followerCount)
+            setFollowingCnt(res.data.followingCount)
+        }
+        )
+    },[])
+   const getFollower=()=>{
+    axios.get('/api/v1/follow/follower')
+    .then((res)=>{
+        console.log(res.data);
+    })
+   }
+   const getFollow=()=>{
+
+   }
   return (
       <ColContainer>
         <MyPageContainer>
@@ -32,13 +57,26 @@ const MyPage = () => {
                 <Img src="../../imgs/profileSample.svg"></Img>
                 <div>
                     <BlackText size={"24px"} weight={500} style={{marginBottom:"10px"}}>toquf0797</BlackText>
-                    <RowContainer style={{gap:"10px"}}>
+                    <RowContainer style={{gap:"10px", }}>
                         <img src='../../imgs/follow.svg'></img>
-                        <BlackText weight={500} size={"20px"}>팔로워</BlackText>
-                        <BlackText weight={500} size={"20px"}>24</BlackText>
-                        <BlackText weight={500} size={"20px"}>팔로우</BlackText>
-                        <BlackText weight={500} size={"20px"}>16</BlackText>
+                        <BlackText weight={500} size={"20px"} onClick={()=>{setDisplay(!display); getFollower()}}>팔로워</BlackText>
+                      
+                        <BlackText weight={500} size={"20px"} >{followerCnt}</BlackText>
+                        <BlackText weight={500} size={"20px"} onClick={()=>{setDisplay2(!display2); getFollow()}}>팔로우</BlackText>
+                        <BlackText weight={500} size={"20px"}>{followingCnt}</BlackText>
                     </RowContainer>
+                    <DropDown display={display}>
+                            <option>1</option>
+                            <option>1</option>
+                            <option>1</option>
+                            <option>1</option>   
+                    </DropDown>
+                    <DropDown display={display2} style={{float: "right", marginLeft:"0px"}}>
+                            <option>1</option>
+                            <option>1</option>
+                            <option>1</option>
+                            <option>1</option>   
+                    </DropDown>
                 </div>
             </ProfileSection>
             <ColContainer style={{width:"80%"}}>
@@ -96,4 +134,10 @@ const ContentContainer=styled.div`
     border-color: #C4C4C4;
     overflow: auto;
 `
- 
+const DropDown=styled.select`
+    display: ${(props)=>(props.display === true ? '' :'none' )};
+    margin-left: 35px;
+    width: 37%;
+    margin-top: 10px;
+    height: 30px;
+`
