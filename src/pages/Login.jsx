@@ -5,7 +5,11 @@ import { BlackText, GrayText } from '../components/commons/Font'
 import { GrayRoundBtn } from '../components/commons/Btns'
 import { GrayRoundInput } from '../components/commons/Inputs'
 import axios from 'axios'
+import { onRefresh } from '../components/utils'
+
 const Login = () => {
+  const JWT_EXPIRY_TIME = 60000*30;
+  
   const [id, setId]=useState('');
   const [pw, setPw]=useState('');
   const onSubmit=(event)=>{
@@ -15,13 +19,36 @@ const Login = () => {
       password: pw,
     })
     .then((res)=>{
-      console.log(res.data);
+      localStorage.setItem("refresh", res.data.refreshToken);
       localStorage.setItem("token", res.data.accessToken);
+      setTimeout(onRefresh, JWT_EXPIRY_TIME - 60000)
     })
+    
     .catch((err)=>
       console.log(err)
     )
   }
+  /*const onRefresh=()=>{
+    
+    axios.post('/api/v1/user/reissue',{
+      accessToken: localStorage.getItem("token"),
+      refreshToken: localStorage.getItem("refresh")
+    })
+    .then((res)=>{ 
+      //새로 받은 토큰으로 업뎃
+      localStorage.setItem("refresh", res.data.refreshToken);
+      localStorage.setItem("token", res.data.accessToken);
+      console.log("refresh"); 
+      //reLogin();
+      setTimeout(onRefresh, JWT_EXPIRY_TIME - 60000)
+    })
+    .catch(err=>console.log(err))
+  }
+  const JWT_EXPIRY_TIME = 60000*1.5;
+  /*const reLogin=()=>{
+    setTimeout(onRefresh, JWT_EXPIRY_TIME - 60000);
+  }*/
+  
   return (
     <LoginContainer>
       <ImgContainer>
