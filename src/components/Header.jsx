@@ -4,7 +4,11 @@ import { RowContainer } from './commons/Container'
 import { Link } from 'react-router-dom'
 const Header = () => {
     const token=localStorage.getItem("token");
-
+    const Logout=()=>{
+        localStorage.removeItem("token");
+        localStorage.removeItem("refresh");
+        window.location.replace("/")
+    }
   return (
    <HeaderContainer>
        <RowContainer>
@@ -20,9 +24,17 @@ const Header = () => {
        </RowContainer>
        {
         token ? 
-        <Link to="/mypage">
-            <Btn>MyPage</Btn>        
-        </Link>
+        <LoginBtns>
+            <Link to="/mypage">
+                <Btn>MyPage</Btn>        
+            </Link>
+           
+                <Btn onClick={Logout}>Logout</Btn>
+            
+           
+            
+        </LoginBtns>
+       
 
         :
         <LoginBtns>
