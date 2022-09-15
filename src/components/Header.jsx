@@ -12,14 +12,16 @@ const Header = () => {
   return (
    <HeaderContainer>
        <RowContainer>
-            <Logo>Artiste</Logo>
+            <Link to="/" style={{textDecoration:"none"}}>
+                <Logo>Artiste</Logo>
+            </Link>
             <Btns>
                 <div>ARTISTE?</div>
                 <Link to="/gallery" style={{textDecoration:"none", color:"#666666"}}>
                     <div>ART GALLERY</div>
                 </Link>
                 <div>PAINT ART</div>
-                <div>MY PAGE</div>
+                {/*<div>MY PAGE</div>*/}
             </Btns>
        </RowContainer>
        {
@@ -28,11 +30,8 @@ const Header = () => {
             <Link to="/mypage">
                 <Btn>MyPage</Btn>        
             </Link>
-           
+            
                 <Btn onClick={Logout}>Logout</Btn>
-            
-           
-            
         </LoginBtns>
        
 
