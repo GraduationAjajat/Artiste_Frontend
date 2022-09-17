@@ -9,7 +9,7 @@ import Grid from './Grid'
 
 const Gallery = () => {
     const radios=['최신순', '조회순', '좋아요순'];
-    const tags=['#풍경', '#인물', '#꽃', '#정물', '#모네', '#바로크', '#르네상스']
+    const tags=['풍경', '인물', '꽃', '#정물', '#모네', '#바로크', '#르네상스']
     
     const [contents, setContents]=useState([]);
 

@@ -11,8 +11,8 @@ const MyPage = () => {
     const [tab, setTab]=useState(1);
     const [followerCnt, setFollowerCnt]=useState(0);
     const [followingCnt, setFollowingCnt]=useState(0);
-    const [follower, setFollower]=useState([]);
-    const [follow, setFollow]=useState([]);
+    const [follower, setFollower]=useState([{}]);
+    const [follow, setFollow]=useState([{}]);
     const [display, setDisplay]=useState(false);
     const [display2, setDisplay2]=useState(false);
     const ClickTab=()=>{
@@ -42,10 +42,15 @@ const MyPage = () => {
     axios.get('/api/v1/follow/follower')
     .then((res)=>{
         console.log(res.data);
+        setFollower(res.data.data)
     })
    }
    const getFollow=()=>{
-
+    axios.get('/api/v1/follow/following')
+    .then((res)=>{
+        console.log(res.data);
+        setFollow(res.data.data);
+    })
    }
   return (
       <ColContainer>
@@ -66,16 +71,17 @@ const MyPage = () => {
                         <BlackText weight={500} size={"20px"}>{followingCnt}</BlackText>
                     </RowContainer>
                     <DropDown display={display}>
-                            <option>1</option>
-                            <option>1</option>
-                            <option>1</option>
-                            <option>1</option>   
+                        {follower.map((obj)=>(
+                            <option>{obj.nickname}</option>
+                        ))}
+                            
                     </DropDown>
                     <DropDown display={display2} style={{float: "right", marginLeft:"0px"}}>
-                            <option>1</option>
-                            <option>1</option>
-                            <option>1</option>
-                            <option>1</option>   
+                        {
+                            follow.map((obj)=>(
+                                <option>{obj.nickname}</option>
+                            ))
+                        }
                     </DropDown>
                 </div>
             </ProfileSection>
