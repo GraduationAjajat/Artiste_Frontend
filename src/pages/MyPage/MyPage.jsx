@@ -7,6 +7,7 @@ import MyGallery from './MyGallery'
 import EditProfile from './EditProfile'
 import Scrap from './Scrap'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 const MyPage = () => {
     const [tab, setTab]=useState(1);
     const [followerCnt, setFollowerCnt]=useState(0);
@@ -52,6 +53,24 @@ const MyPage = () => {
         setFollow(res.data.data);
     })
    }
+   const clickFollower=(value)=>{
+    let id=0;
+    for(var i=0;i<follower.length;i++){
+        if (follower[i].nickname===value){
+            id=follower[i].id;
+        }
+    }
+    window.location.href=`profile/${id}`
+   }
+   const clickFollow=(value)=>{
+    let id=0;
+    for(var i=0;i<follow.length;i++){
+        if (follow[i].nickname===value){
+            id=follow[i].id;
+        }
+    }
+    window.location.href=`profile/${id}`
+   }
   return (
       <ColContainer>
         <MyPageContainer>
@@ -70,13 +89,15 @@ const MyPage = () => {
                         <BlackText weight={500} size={"20px"} onClick={()=>{setDisplay2(!display2); getFollow()}}>팔로우</BlackText>
                         <BlackText weight={500} size={"20px"}>{followingCnt}</BlackText>
                     </RowContainer>
-                    <DropDown display={display}>
-                        {follower.map((obj)=>(
-                            <option>{obj.nickname}</option>
+                    <DropDown display={display} onChange={(e)=>{ clickFollower(e.target.value)}}>
+                        <option>팔로워 목록</option>
+                        {follower.map((obj , i)=>(
+                            <option>{obj.nickname}</option> 
                         ))}
                             
                     </DropDown>
-                    <DropDown display={display2} style={{float: "right", marginLeft:"0px"}}>
+                    <DropDown display={display2} onChange={(e)=>{ clickFollow(e.target.value)}} style={{float: "right", marginLeft:"0px"}} >
+                        <option>팔로우 목록</option>
                         {
                             follow.map((obj)=>(
                                 <option>{obj.nickname}</option>
