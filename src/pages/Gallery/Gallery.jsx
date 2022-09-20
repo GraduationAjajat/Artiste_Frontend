@@ -20,42 +20,64 @@ const Gallery = () => {
         .then((res)=>{
             setContents(res.data);
             console.log(res.data);
+          
         })
     },[])
-
+   
    
     const [search, setSearch]=useState('');
     const [tag, setTag]=useState('');
     const [sort, setSort]=useState('최신순');
+    
     const [enter, setEnter]=useState(false);
 
     const ClickRadio=(e)=>{
-        //console.log(e.target.value);
+        console.log(e.target.value)
         setSort(e.target.value);
-        onSearch();
+        
     }
 
+    const clickTags=(tag)=>{
+        setTag(tag, ()=>{
+            console.log(tag);
+        });
+       
+    }
     
     const onKeyPress=(e)=>{
         if(e.key=='Enter'){
            onSearch();
         }
     }
+    
     const onSearch=()=>{
-        console.log("hihi");
+        let searchSort='';
+        if (sort==="최신순"){
+            searchSort="createdDate"
+        }else if(sort==="조회순"){
+            searchSort="hits"
+        }else{
+            searchSort="scrapCount"
+        }
+        console.log(sort);
+        console.log(searchSort);
         axios.get('/api/v1/exhibition/search',{
             params:{
                 search: search,
-                sortBy: sort,
+                sortBy: searchSort,
                 tags: tag,
             }
         },
         )
         .then((res)=>{
+            console.log(search+" "+searchSort+" "+tag)
             console.log(res.data);
+            setContents(res.data);
         })
     }
-
+    useEffect(()=>{
+        onSearch();
+    },[sort, tag])
     
 
   return (
@@ -67,7 +89,7 @@ const Gallery = () => {
             </TopContainer>
             <Tags>
                 {tags.map((tag)=>(
-                    <div onClick={()=> {setTag(tag); onSearch();}}>{tag}</div>
+                    <div onClick={()=> {clickTags(tag)}}>{tag}</div>
                 ))}
             </Tags>
             <RadioBtns>
