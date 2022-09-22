@@ -13,6 +13,7 @@ import axios from 'axios'
 const Content = () => {
 
     const params=useParams();
+    console.log(params)
     const [view, setView]=useState('2D');
     const [color1, setColor1]=useState('c4c4c4');
     const [color2, setColor2]=useState('');
@@ -33,6 +34,10 @@ const Content = () => {
     }
     const ClickLike=()=>{
       setLike(!like);
+      axios.post(`/api/v1/scrap/${params.id}`)
+        .then((res=>{
+            console.log(res.data);
+        }))
     }
     const token=localStorage.getItem("token")
     axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
@@ -47,6 +52,12 @@ const Content = () => {
       .then((res)=>{
         console.log(res.data.data);
         setComment(res.data.data);
+      })
+      axios.get(`/api/v1/scrap/check/${params.id}`)
+      .then((res)=>{
+        if (res.data===true){
+          setLike(true);
+        }
       })
   },[])
 
