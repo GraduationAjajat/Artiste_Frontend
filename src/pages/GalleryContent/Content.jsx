@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
-import { ViewBtn } from '../../components/commons/Btns'
+import { BorderBtn, ViewBtn } from '../../components/commons/Btns'
 import { BlackText } from '../../components/commons/Font'
 import Content2D from './Content2D'
 import Content3D from './Content3D'
@@ -13,7 +13,6 @@ import axios from 'axios'
 const Content = () => {
 
     const params=useParams();
-    console.log(params)
     const [view, setView]=useState('2D');
     const [color1, setColor1]=useState('c4c4c4');
     const [color2, setColor2]=useState('');
@@ -22,6 +21,7 @@ const Content = () => {
     const [artist, setArtist]=useState({});
     const [artList, setArtList]=useState([]);
     const [comment, setComment]=useState([]);
+    const [follow, setFollow]=useState(false);
     const ClickRadio=(e)=>{
         setView(e.target.value);
         if(color1!==''){
@@ -45,6 +45,19 @@ const Content = () => {
         }))
       }
     }
+    const clickFollow=()=>{
+      if (follow===true){
+        //팔로우 취소
+        setFollow(!follow);
+        axios.delete(`/api/v1/follow/follower/${artist.id}`)
+        .then((res)=>console.log(res.data))
+      }else{
+        //팔로우 추가
+        setFollow(!follow);
+        axios.post(`/api/v1/follow/${artist.id}`)
+        .then((res)=>console.log(res.data))
+      }
+    }
     const token=localStorage.getItem("token")
     axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
     useEffect(()=>{
@@ -65,6 +78,13 @@ const Content = () => {
           setLike(true);
         }
       })
+      /*axios.get(`/api/v1/follow/check/${artist.id}`)
+      .then((res)=>{
+        if (res.data===true){
+          setFollow(true)
+          console.log(follow);
+        }
+      })*/
   },[])
 
   return (
@@ -73,7 +93,11 @@ const Content = () => {
             <HeaderContent>
                 <div style={{fontSize:'36px', }}>{content.exhibitionName}</div>
             {/* 여기서 content.exhibitionArtist.ninkname이렇게 하지말고 각각 다 state로 만들면 오류 안남 */}
-          <div>{artist.nickname}</div>
+          <RowContainer style={{gap: '15px'}}>
+            <div>{artist.nickname}</div>
+            
+            <FollowBtn onClick={clickFollow} color={follow}>팔로우</FollowBtn>
+          </RowContainer>
             </HeaderContent>
         </HeaderContainer>
         <ContentContainer>
@@ -138,4 +162,11 @@ const Text=styled.div`
   width: 100%;
   height: 400px;
   margin: 70px 0 100px 0;
+`
+const FollowBtn=styled.button`
+  background-color: ${props=>props.color? 'black' : 'transparent'};
+  border-radius: 5px;
+  border: 1px solid;
+  color: ${props=>props.color ? 'white': 'black'};
+  padding: 4px 9px;
 `
