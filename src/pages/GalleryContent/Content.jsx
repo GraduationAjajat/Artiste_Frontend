@@ -33,11 +33,17 @@ const Content = () => {
         } 
     }
     const ClickLike=()=>{
+      if(like===true){
+        setLike(!like);
+        axios.delete(`/api/v1/scrap/unscrap/${params.id}`)
+          .then((res)=>console.log(res.data));
+      }else{
       setLike(!like);
       axios.post(`/api/v1/scrap/${params.id}`)
         .then((res=>{
             console.log(res.data);
         }))
+      }
     }
     const token=localStorage.getItem("token")
     axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;

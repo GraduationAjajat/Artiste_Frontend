@@ -5,7 +5,24 @@ import { BlackText } from '../../components/commons/Font'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 const Grid = ({contents}) => {
-
+    console.log(contents);
+    const [scrap, setScrap]=useState(false);
+    const clickHeart=(id)=>{
+        
+        if (scrap===true){
+            setScrap(!scrap);
+            axios.delete(`/api/v1/scrap/unscrap/${id}`)
+            .then((res)=>console.log(res.data));
+        }
+        else{
+            setScrap(!scrap);
+            axios.post(`/api/v1/scrap/${id}`)
+            .then((res=>{
+            console.log(res.data);
+            }))
+        }
+    }
+   
   return (
     <ColContainer>
         <GridContainer>
@@ -13,22 +30,30 @@ const Grid = ({contents}) => {
                 <CardContainer>
                     <Link to={`content/${content.exhibitionId}`} style={{ textDecoration: 'none' }}>
                         <Img src='../../imgs/sampleImg.png'></Img>
+                        </Link>
                         <Content>
                         <RowContainer style={{justifyContent:"space-between"}}>
                             <BlackText size="20px" weight="700">{content.exhibitionName}</BlackText>
                             <BlackText size="15px">{content.exhibitionStartDate}</BlackText>
                         </RowContainer>
+                       
                         <RowContainer style={{justifyContent:"space-between"}}>
                             <BlackText size="15px">{content.exhibitionArtistName}</BlackText>
                             <RowContainer>
-                                <img src='../../imgs/heart.svg'></img>
+                                {
+                                    scrap?
+                                    <img src='../../imgs/fillheart.svg' style={{width: "20px"}} onClick={()=>clickHeart(content.exhibitionId)}></img>
+                                    :
+                                    <img src='../../imgs/heart.svg' onClick={()=>clickHeart(content.exhibitionId)}></img>
+
+                                }
+                               
                                 <Num>{content.scrapCount}</Num>
                                 <img src='../../imgs/comment.svg'></img>
                                 <Num>{content.commentCount}</Num>
                             </RowContainer>
                         </RowContainer>
                         </Content>
-                    </Link>
                 </CardContainer>
             ))}
         </GridContainer>
@@ -54,7 +79,7 @@ const Img=styled.img`
 `
 const Content=styled.div`
     margin-top: 16px;
-    width: 100%;
+    width: 80%;
   
 `
 const Num=styled(BlackText)`
