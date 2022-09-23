@@ -25,7 +25,7 @@ const Profile = () => {
     <ColContainer>
     <GalleryContainer>
         <TopContainer>
-            <GrayText size={"32px"}>toquf0797<br/>GALLERY</GrayText>
+            <GrayText size={"32px"}>{contents[0].exhibitionArtistName}<br/>GALLERY</GrayText>
             <GrayInput placeholder='전시회명을 검색해보세요!'></GrayInput>
         </TopContainer>
         <GridContainer>
