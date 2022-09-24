@@ -14,7 +14,7 @@ const Scrap = () => {
       }
   })
     .then((res)=>{
-    console.log(res.data.data)
+    console.log(res.data)
     setContents(res.data.data);
     console.log(contents)
     })

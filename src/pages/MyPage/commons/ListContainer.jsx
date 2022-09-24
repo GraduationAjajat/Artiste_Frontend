@@ -8,6 +8,7 @@ import { Line } from '../../../components/commons/Line'
 
 const ListContainer = ({contents, type}) => {
   console.log(contents);
+
   return (
     <ColContainer>
       <MyGalleryContainer>
@@ -18,6 +19,21 @@ const ListContainer = ({contents, type}) => {
               <Content>
                 <LeftSection>
                     <div>
+                      { type ==='gallery'?
+                        (
+                          content.exhibitionState==="APPROVAL"
+                          ?
+                          <ApprovalBtn>
+                            승인됨
+                          </ApprovalBtn>
+                          :
+                          <ApprovalBtn color='black'>
+                            대기중
+                          </ApprovalBtn>
+                        )
+                      :
+                      <></>
+                      }
                         <BlackText weight={"700"} size={"20px"}>{ type === 'scrap' ? content.exhibition.exhibitionName : content.exhibitionName}</BlackText>
                         <BlackText weight={"500"} size={"15px"}>{content.exhibitionArtistName}</BlackText>
                     </div>
@@ -73,4 +89,12 @@ const Num=styled(BlackText)`
     font-size: 15px;
     font-weight: 500px;
     margin: 0 9px 0 6px;
+`
+const ApprovalBtn=styled.button`
+    padding:5px 10px;
+    border: 1px solid #111111;
+    border-radius: 5px;
+    background-color:${props=>props.color ==='black' ? 'black' : 'white'};
+    color: ${props=>props.color ==='black' ? 'white' : 'black'};
+    margin-bottom: 10px;
 `

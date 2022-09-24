@@ -24,7 +24,7 @@ const MyGallery = () => {
     })
   },[])
   return(
-   <ListContainer contents={contents}/>
+   <ListContainer contents={contents} type={"gallery"}/>
   )
 }
 

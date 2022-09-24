@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
 import { BlackText } from '../../components/commons/Font'
@@ -33,7 +34,10 @@ const MyComment = () => {
             </Left>
             <Right>
               <BlackText weight={"500"} size={"15px"}>{comment.createdDate.substr(0,10)}</BlackText>
+              <Link to={`/gallery/content/${comment.exhibition.id}`}>
               <Btn>확인</Btn>
+              </Link>
+              
             </Right>
           </CommentContainer>
           <Line/>
@@ -61,7 +65,7 @@ const Left=styled.div`
   width: 90%;
 `
 const Right=styled(ColContainer)`
-  width: 10%;
+  width: 15%;
   gap: 15px;
 `
 const Btn=styled.button`
