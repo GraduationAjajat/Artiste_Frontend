@@ -7,7 +7,9 @@ import { GrayRoundInput } from '../components/commons/Inputs'
 import axios from 'axios'
 
 const SignUp = () => {
+  const types=["일반 회원", "관리자"];
   const [sex, setSex]=useState(0)
+  const [type, setType]=useState('');
   const [agree1, setAgree1]=useState(false);
   const [agree2, setAgree2]=useState(false);
   const [email, setEmail]=useState('');
@@ -23,6 +25,9 @@ const SignUp = () => {
     }else{
       setSex(0)
     }
+  }
+  const ClickType=(e)=>{
+    setType(e.target.value);
   }
   const onChangeEmail=(e)=>{
     setEmail(e.target.value)
@@ -87,18 +92,35 @@ const SignUp = () => {
     setBirth(e.target.value);
   }
   const clickSubmit=(e)=>{
-    axios.post('/api/v1/user/signup',{
-      birthday: birth,
-      email: email,
-      gender: sex,
-      nickname: nickname, 
-      password: pw,
-      profileImage: img,
-      username: name
-    })
-    .then((res)=>{
-      console.log(res.data);
-    })
+    if (type==="일반 회원"){
+      axios.post('/api/v1/user/signup',{
+        birthday: birth,
+        email: email,
+        gender: sex,
+        nickname: nickname, 
+        password: pw,
+        profileImage: img,
+        username: name
+      })
+      .then((res)=>{
+        console.log(res.data);
+      })
+    }else{
+      axios.post('/api/v1/user/admin/signup',{
+        birthday: birth,
+        email: email,
+        gender: sex,
+        nickname: nickname, 
+        password: pw,
+        profileImage: img,
+        username: name
+      })
+      .then((res)=>{
+        console.log('admin')
+        console.log(res.data);
+      })
+    }
+   
   }
   
   return (
@@ -110,6 +132,23 @@ const SignUp = () => {
         <BlackText size={"32px"} weight={500}>회원가입</BlackText>
         <GrayText marginTop={"4px"}>아르티스트를 이용하시려면 회원가입을 진행해주세요</GrayText>
         <Form>
+          <InputText>가입 유형</InputText>
+          <RadioBtnsContainer>
+          {
+            types.map((t)=>(
+              <label>
+                <RadioBtn
+                  type="radio"
+                  value={t}
+                  checked={type===t}
+                  onChange={ClickType}>
+                </RadioBtn>
+                {t}
+              </label>
+            ))
+          }
+          </RadioBtnsContainer>
+          
           <InputText>이메일</InputText>
           <Label>
             <GrayRoundInput onChange={(e)=>onChangeEmail(e)}/>
@@ -205,4 +244,21 @@ const CheckEmailBtn=styled(BorderBtn)`
 const Label=styled.label`
   position: relative;
   width: 100%;
+`
+const RadioBtnsContainer=styled(RowContainer)`
+  gap: 20px;
+  margin-top: 10px;
+`
+const RadioBtn=styled.input`
+  appearance: none;
+  width:15px;
+  height:15px;
+  border: 1px solid #666666;
+  vertical-align: middle;
+  border-radius: 100%; 
+  margin-right: 10px;
+  margin-bottom: 5px;
+  :checked{
+    background-color: #666666;
+  }
 `
