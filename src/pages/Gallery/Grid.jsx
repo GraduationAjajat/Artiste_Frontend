@@ -28,8 +28,8 @@ const Grid = ({contents}) => {
         <GridContainer>
             {contents.map((content)=>(
                 <CardContainer>
-                    <Link to={`content/${content.exhibitionId}`} style={{ textDecoration: 'none' }}>
-                        <Img src='../../imgs/sampleImg.png'></Img>
+                    <Link to={`/gallery/${content.exhibitionId}`} style={{ textDecoration: 'none' }} aria-label='상세페이지'>
+                        <Img src='../../imgs/sampleImg.png' alt='대표이미지'></Img>
                         </Link>
                         <Content>
                         <RowContainer style={{justifyContent:"space-between"}}>
@@ -41,15 +41,15 @@ const Grid = ({contents}) => {
                             <BlackText size="15px">{content.exhibitionArtistName}</BlackText>
                             <RowContainer>
                                 {
-                                    scrap?
-                                    <img src='../../imgs/fillheart.svg' style={{width: "20px"}} onClick={()=>clickHeart(content.exhibitionId)}></img>
+                                    scrap ===true || content.scrapFlag ===true?
+                                    <img src='../../imgs/fillheart.svg' style={{width: "20px"}} onClick={()=>clickHeart(content.exhibitionId)} alt='하트'></img>
                                     :
-                                    <img src='../../imgs/heart.svg' onClick={()=>clickHeart(content.exhibitionId)}></img>
+                                    <img src='../../imgs/heart.svg' onClick={()=>clickHeart(content.exhibitionId)} alt='하트'></img>
 
                                 }
                                
                                 <Num>{content.scrapCount}</Num>
-                                <img src='../../imgs/comment.svg'></img>
+                                <img src='../../imgs/comment.svg' alt='댓글'></img>
                                 <Num>{content.commentCount}</Num>
                             </RowContainer>
                         </RowContainer>
