@@ -9,7 +9,7 @@ import Grid from './Grid'
 
 const Gallery = () => {
     const radios=['최신순', '조회순', '좋아요순'];
-    const tags=['풍경', '인물', '꽃', '#정물', '#모네', '#바로크', '#르네상스']
+    const tags=['#풍경', '#인물', '#꽃', '#정물', '#모네', '#바로크', '#르네상스']
     
     const [contents, setContents]=useState([]);
 
@@ -20,28 +20,27 @@ const Gallery = () => {
         .then((res)=>{
             setContents(res.data);
             console.log(res.data);
-          
         })
     },[])
    
    
     const [search, setSearch]=useState('');
     const [tag, setTag]=useState('');
+    const [isClickTag, setIsClickTag]=useState([0,0,0,0,0,0,0]);
     const [sort, setSort]=useState('최신순');
-    
-    const [enter, setEnter]=useState(false);
 
     const ClickRadio=(e)=>{
         console.log(e.target.value)
         setSort(e.target.value);
-        
     }
 
-    const clickTags=(tag)=>{
-        setTag(tag, ()=>{
-            console.log(tag);
-        });
-       
+    const clickTags=(tag, i)=>{
+        setTag(tag);
+        setIsClickTag(isClickTag.map((t, index)=>(
+            index===i ? 1: 0
+        )
+        ))
+        console.log(isClickTag)
     }
     
     const onKeyPress=(e)=>{
@@ -88,8 +87,8 @@ const Gallery = () => {
                 <GrayInput placeholder='전시회명을 검색해보세요!' onKeyPress={onKeyPress} value={search} onChange={(e)=>setSearch(e.target.value)}></GrayInput>
             </TopContainer>
             <Tags>
-                {tags.map((tag)=>(
-                    <div onClick={()=> {clickTags(tag)}}>{tag}</div>
+                {tags.map((tag, i)=>(
+                    <Tag onClick={()=> {clickTags(tag.substring(1), i)}} click={isClickTag[i]}>{tag}</Tag>
                 ))}
             </Tags>
             <RadioBtns>
@@ -153,4 +152,7 @@ const Label=styled.label`
 `
 const GridContainer=styled.div`
     width: 100%;
+`
+const Tag=styled.div`
+    font-weight: ${props=>props.click === 1 ? 800 : 400};
 `
