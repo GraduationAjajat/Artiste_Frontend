@@ -8,6 +8,11 @@ const EditProfile = ({email}) => {
   console.log(email)
   const [profile, setProfile]=useState({});
   const [img, setImg]=useState('');
+  const [pw, setPw]=useState('');
+  const [name, setName]=useState('');
+  const [nickname, setNickname]=useState('');
+
+  const [user, setUser]=useState({});
 
   useEffect(()=>{
     axios.get(`/api/v1/user/${email}`)
@@ -15,27 +20,78 @@ const EditProfile = ({email}) => {
       console.log(res.data);
       setProfile(res.data);
       setImg(res.data.profileImage);
+      
       console.log(profile.profileImage)
     })
   },[])
-
   const encodeFileToBase64=(file)=>{
     const reader=new FileReader();
     reader.readAsDataURL(file);
-    return new Promise((resolve)=>{
+    
+   /* return new Promise((resolve)=>{
       reader.onload=()=>{
         setImg(reader.result);
         resolve();
       }
-    })
+    })*/
+    reader.onloadend = () => {
+      const previewImgUrl = reader.result
+      setImg(previewImgUrl)
+      console.log(previewImgUrl);
+    }
   }
-  const clickEdit=()=>{
-    //axios.put('/api/v1/user')
+  
+  const clickEdit=(e)=>{
+    e.preventDefault();
+      const formData=new FormData();
+      const json = JSON.stringify({
+          birthday: profile.birthday,
+          email: profile.email,
+          gender: profile.gender,
+          nickname: nickname, 
+          password: pw,
+          username: name
+    }) 
+    const blob = new Blob([json], { type: "application/json" });
+    formData.append("userDto",blob);
+    formData.append('profileImage', img);
+      
+      
+      for (var value of formData.keys()) {
+        console.log(value);
+      }
+
+      for (var value of formData.values()) {
+        console.log(value);
+      }
+      
+      
+    
+    /*formData.append("data", JSON.stringify({
+      birthday: profile.birthday,
+      email: profile.email,
+      gender: profile.gender,
+      nickname: nickname, 
+      password: pw,
+
+      username: name
+    }))*/
+
+    axios.post('/api/v1/user',
+      formData,
+      {Headers :{
+        'content-type': 'multipart/form-data',
+      }}
+     
+   ).then((res)=>console.log(res.data))
   }
+  
   return (
     <ColContainer style={{height:"100%"}}>
       <EditProfileContainer>
-        <ImgContainer>
+       
+    
+    <ImgContainer>
           <Img src={img}></Img>
           <input type='file' onChange={(e)=>{encodeFileToBase64(e.target.files[0])}}></input>
         </ImgContainer>
@@ -46,7 +102,7 @@ const EditProfile = ({email}) => {
           </Content>
           <Content>
             <InputTitle>ㅣ 비밀번호</InputTitle>
-            <Input type='password'></Input>
+            <Input type='password' onChange={(e)=>setPw(e.target.value)}></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 비밀번호 확인</InputTitle>
@@ -54,11 +110,11 @@ const EditProfile = ({email}) => {
           </Content>
           <Content>
             <InputTitle>ㅣ 이름</InputTitle>
-            <Input placeholder={profile.username}></Input>
+            <Input placeholder={profile.username} onChange={(e)=>setName(e.target.value)}></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 닉네임</InputTitle>
-            <Input placeholder={profile.nickname}></Input>
+            <Input placeholder={profile.nickname} onChange={(e)=>setNickname(e.target.value)}></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 생년월일</InputTitle>
@@ -83,6 +139,9 @@ const EditProfile = ({email}) => {
         <BtnContainer>
           <Btn onClick={clickEdit}>수정</Btn>
         </BtnContainer>
+
+   
+       
       </EditProfileContainer>
     </ColContainer>
     
