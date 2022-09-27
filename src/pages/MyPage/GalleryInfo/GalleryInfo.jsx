@@ -1,10 +1,32 @@
+import axios from 'axios'
 import React from 'react'
+import { useEffect, useState,} from 'react'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { BlackBtn, BorderBtn } from '../../../components/commons/Btns'
 import { ColContainer, RowContainer } from '../../../components/commons/Container'
 import { BlackText, GrayText} from '../../../components/commons/Font'
 import { GrayInput } from '../../../components/commons/Inputs'
+import { Link } from 'react-router-dom'
 const GalleryInfo = () => {
+    const id=useParams();
+    const [content, setContent]=useState({});
+    const [artist, setArtist]=useState({});
+    const [galleryArr, setGalleryArr]=useState([]);
+
+    useEffect(()=>{
+        axios.get(`/api/v1/exhibition/${id.id}`)
+        .then((res)=>{
+            console.log(res.data);
+            setContent(res.data);
+            setArtist(res.data.exhibitionArtist)
+        })
+        axios.get(`/api/v1/exhibition/artist/${id.id}`)
+        .then((res)=>{
+            console.log(res.data);
+            setGalleryArr(res.data);
+        })
+    },[])
   return (
     <ColContainer>
         <GalleryInfoContainer>
@@ -16,7 +38,7 @@ const GalleryInfo = () => {
                     <Img src='../../imgs/sampleImg.png'></Img>
                 </Left>
                 <Right>
-                    <BlackText size={"32px"} weight={"700"}>꿈 속의 자연</BlackText>
+                    <BlackText size={"32px"} weight={"700"}>{content.exhibitionName}</BlackText>
                     <Tags>
                         <BlackText>#꽃</BlackText>
                         <BlackText>#꽃</BlackText>
@@ -25,7 +47,7 @@ const GalleryInfo = () => {
                     <ColContainer style={{gap: "20px", width: "100%"}}>
                         <RowContainer style={{width:"100%"}}>
                             <Title>작가</Title>
-                            <Content>toquf0797</Content>
+                            <Content>{artist.nickname}</Content>
                         </RowContainer>
                         <RowContainer style={{width:"100%"}}>
                             <Title>전시기간</Title>
@@ -35,12 +57,21 @@ const GalleryInfo = () => {
                     </ColContainer>
                    
                     <RowScrollContainer>
-                        <Another src='../../imgs/sampleImg.png'></Another>
-                        <Another src='../../imgs/sampleImg.png'></Another>
-                        <Another src='../../imgs/sampleImg.png'></Another>
-                        <Another src='../../imgs/sampleImg.png'></Another>
+                        {
+                            galleryArr.map((gallery)=>(
+                                <Link to={`gallery/content/${gallery.exhibitionId}`}>
+                                    <Another src={gallery.exhibitionThumbnail}></Another>
+                                </Link>
+                                 
+                             
+                            ))
+                        }
+
                     </RowScrollContainer>
-                    <BorderBtn background="#111111" color={"#FFFFFF"} width="25%" style={{height:" 50px"}}>전시관람하기  </BorderBtn>
+                    <Link to={`/gallery/content/${id.id}`}>
+                    <BorderBtn background="#111111" color={"#FFFFFF"} style={{height:" 40px"}}>전시관람하기  </BorderBtn>
+                    </Link>
+                    
                 </Right>
             </ContentContainer>
         </GalleryInfoContainer>
@@ -108,6 +139,6 @@ const RowScrollContainer=styled(RowContainer)`
   margin-bottom: 20px;
 `
 const Another=styled.img`
-  width: 30%;
+  width: 80%;
   height: 200px;
 `

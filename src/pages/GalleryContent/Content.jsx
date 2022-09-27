@@ -33,6 +33,7 @@ const Content = () => {
         } 
     }
     const ClickLike=()=>{
+      console.log(artist)
       if(like===true){
         setLike(!like);
         axios.delete(`/api/v1/scrap/unscrap/${params.id}`)
@@ -67,6 +68,7 @@ const Content = () => {
           setArtist(res.data.exhibitionArtist);
           setArtList(res.data.artList);
       })
+      .then(()=>console.log("artiste: "+artist))
       axios.get(`/api/v1/comment/${params.id}`)
       .then((res)=>{
         console.log(res.data.data);
@@ -98,6 +100,7 @@ const Content = () => {
             
             <FollowBtn onClick={clickFollow} color={follow}>팔로우</FollowBtn>
           </RowContainer>
+          
             </HeaderContent>
         </HeaderContainer>
         <ContentContainer>
@@ -129,7 +132,11 @@ const Content = () => {
           
           <Text>
             {content.exhibitionDesc}
-          </Text>    
+          </Text>
+          <Link to={`/gallery/${params.id}`}>
+            <div style={{float: 'right'}}>전시회 상세 정보 보러가기 {'>'}{'>'}</div>  
+          </Link>
+          
         </ContentContainer>
         <Comment comments={comment}/>
     </ColContainer>
