@@ -13,7 +13,6 @@ const GalleryInfo = () => {
     const [content, setContent]=useState({});
     const [artist, setArtist]=useState({});
     const [galleryArr, setGalleryArr]=useState([]);
-
     useEffect(()=>{
         axios.get(`/api/v1/exhibition/${id.id}`)
         .then((res)=>{
@@ -40,8 +39,9 @@ const GalleryInfo = () => {
                 <Right>
                     <BlackText size={"32px"} weight={"700"}>{content.exhibitionName}</BlackText>
                     <Tags>
-                        <BlackText>#꽃</BlackText>
-                        <BlackText>#꽃</BlackText>
+                        {content.tagList && content.tagList.map((tag)=>(
+                            <BlackText>#{tag}</BlackText>
+                        ))}
                     </Tags>
                     <Line/>
                     <ColContainer style={{gap: "20px", width: "100%"}}>
