@@ -1,62 +1,87 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
 import { Flex } from '../../components/commons/Flex'
 import { BlackText } from '../../components/commons/Font'
+import axios from 'axios'
+const EditProfile = ({email}) => {
+  console.log(email)
+  const [profile, setProfile]=useState({});
+  const [img, setImg]=useState('');
 
-const EditProfile = () => {
-  const [sex, setSex]=useState('man')
-  const handleClick=(e)=>{
-    if (sex==='man'){
-      setSex('woman');
-    }else{
-      setSex('man')
-    }
+  useEffect(()=>{
+    axios.get(`/api/v1/user/${email}`)
+    .then((res)=>{
+      console.log(res.data);
+      setProfile(res.data);
+      setImg(res.data.profileImage);
+      console.log(profile.profileImage)
+    })
+  },[])
+
+  const encodeFileToBase64=(file)=>{
+    const reader=new FileReader();
+    reader.readAsDataURL(file);
+    return new Promise((resolve)=>{
+      reader.onload=()=>{
+        setImg(reader.result);
+        resolve();
+      }
+    })
   }
-
+  const clickEdit=()=>{
+    //axios.put('/api/v1/user')
+  }
   return (
     <ColContainer style={{height:"100%"}}>
       <EditProfileContainer>
         <ImgContainer>
-          <Img src='../../imgs/profileSample.svg'></Img>
+          <Img src={img}></Img>
+          <input type='file' onChange={(e)=>{encodeFileToBase64(e.target.files[0])}}></input>
         </ImgContainer>
         <ContentContainer>
           <Content>
             <InputTitle>ㅣ 이메일</InputTitle>
-            <Input></Input>
+            <Input value={email} disabled></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 비밀번호</InputTitle>
-            <Input></Input>
+            <Input type='password'></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 비밀번호 확인</InputTitle>
-            <Input></Input>
+            <Input type='password'></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 이름</InputTitle>
-            <Input></Input>
+            <Input placeholder={profile.username}></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 닉네임</InputTitle>
-            <Input></Input>
+            <Input placeholder={profile.nickname}></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 생년월일</InputTitle>
-            <Input></Input>
+            <Input value={profile.birthday} disabled></Input>
           </Content>
           <Content>
             <InputTitle>ㅣ 성별</InputTitle>
             <RowContainer style={{margin: "15px 0 20px 0"}}>
-              {sex==='man'?<img src='../imgs/checked.svg' onClick={handleClick}></img> : <img src='../imgs/unchecked.svg' onClick={handleClick}></img> }
+              {profile.gender===1?
+                <img src='../imgs/checked.svg'></img> : 
+                <img src='../imgs/unchecked.svg'></img> 
+              }
               <CheckText>남성</CheckText>
-              {sex==='woman'?<img src='../imgs/checked.svg' onClick={handleClick}></img> : <img src='../imgs/unchecked.svg' onClick={handleClick}></img> }
+              {profile.gender===2
+              ?<img src='../imgs/checked.svg'></img> 
+              : <img src='../imgs/unchecked.svg'></img> 
+              }
               <CheckText>여성</CheckText>
             </RowContainer>
           </Content>
         </ContentContainer>
         <BtnContainer>
-          <Btn>수정</Btn>
+          <Btn onClick={clickEdit}>수정</Btn>
         </BtnContainer>
       </EditProfileContainer>
     </ColContainer>
@@ -75,9 +100,12 @@ const ImgContainer=styled(Flex)`
   height: 100%;
   align-items: flex-start;
   padding-top: 20px;
+  flex-direction: column;
 `
 const Img=styled.img`
   width: 80%;
+  height: 25%;
+  border-radius:50%;
 `
 const ContentContainer=styled(ColContainer)`
   width: 70%;
