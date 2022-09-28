@@ -6,28 +6,30 @@ import { GrayRoundBtn } from '../components/commons/Btns'
 import { GrayRoundInput } from '../components/commons/Inputs'
 import axios from 'axios'
 import { onRefresh } from '../components/utils'
+import { getRoles } from '@testing-library/react'
 
 const Login = () => {
   const JWT_EXPIRY_TIME = 60000*30;
   
   const [id, setId]=useState('');
   const [pw, setPw]=useState('');
-  const onSubmit=(event)=>{
+  const token=localStorage.getItem("token")
+  axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
+  
+  async function onSubmit(event){
     event.preventDefault();
-    axios.post('/api/v1/user/login', {
+    const res=await axios.post('/api/v1/user/login', {
       email: id,
       password: pw,
     })
-    .then((res)=>{
+    
       localStorage.setItem("refresh", res.data.refreshToken);
       localStorage.setItem("token", res.data.accessToken);
       setTimeout(onRefresh, JWT_EXPIRY_TIME - 60000)
-    })
+      window.location.href='/'; //token 설정이 다 되면 이동
     
-    .catch((err)=>
-      console.log(err)
-    )
   }
+  
   /*const onRefresh=()=>{
     
     axios.post('/api/v1/user/reissue',{

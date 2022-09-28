@@ -16,6 +16,7 @@ const MyPage = () => {
     const [follow, setFollow]=useState([{}]);
     const [display, setDisplay]=useState(false);
     const [display2, setDisplay2]=useState(false);
+    const [profile, setProfile]=useState({});
     const ClickTab=()=>{
         switch(tab){
             case 1:
@@ -25,7 +26,7 @@ const MyPage = () => {
             case 3:
                 return <MyComment/>
             case 4:
-                return <EditProfile/>
+                return <EditProfile email={profile.email}/>
         }
     }
     const token=localStorage.getItem("token")
@@ -38,6 +39,10 @@ const MyPage = () => {
             setFollowingCnt(res.data.followingCount)
         }
         )
+        axios.get('/api/v1/user')
+        .then((res)=>{
+            setProfile(res.data);
+        })
     },[])
    const getFollower=()=>{
     axios.get('/api/v1/follow/follower')
@@ -78,7 +83,7 @@ const MyPage = () => {
                 <BlackText weight={500} size={"32px"}>마이페이지</BlackText>
             </TopSection>
             <ProfileSection>
-                <Img src="../../imgs/profileSample.svg"></Img>
+                <Img src={profile.profileImage}/>
                 <div>
                     <BlackText size={"24px"} weight={500} style={{marginBottom:"10px"}}>toquf0797</BlackText>
                     <RowContainer style={{gap:"10px", }}>
@@ -141,6 +146,8 @@ const ProfileSection=styled(RowContainer)`
 const Img=styled.img`
     width:10%;
     margin-right: 30px;
+    height: 100px;
+    border-radius: 50%;
 `
 const Tab=styled.button`
     width: 100%;

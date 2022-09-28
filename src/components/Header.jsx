@@ -1,14 +1,29 @@
-import React from 'react'
+import React , {useState} from 'react'
 import styled from 'styled-components'
 import { RowContainer } from './commons/Container'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import axios from 'axios'
 const Header = () => {
+    
     const token=localStorage.getItem("token");
+    axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
     const Logout=()=>{
         localStorage.removeItem("token");
         localStorage.removeItem("refresh");
+        localStorage.removeItem('role')
         window.location.replace("/")
     }
+   async function checkRole(){
+    const res=await axios.get('/api/v1/user');
+    localStorage.setItem('role', res.data.authorities[0].authorityName)
+    if (res.data.authorities[0].authorityName==="ROLE_ADMIN"){
+        window.location.href='/admin';
+    }else{
+        window.location.href='/mypage';
+    }
+    
+   }
   return (
    <HeaderContainer>
        <RowContainer>
@@ -27,9 +42,12 @@ const Header = () => {
        {
         token ? 
         <LoginBtns>
-            <Link to="/mypage">
-                <Btn>MyPage</Btn>        
-            </Link>
+            {
+                
+              
+                <Btn onClick={checkRole}>MyPage</Btn>        
+            }
+           
             
                 <Btn onClick={Logout}>Logout</Btn>
         </LoginBtns>
