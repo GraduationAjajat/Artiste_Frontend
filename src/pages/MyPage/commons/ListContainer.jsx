@@ -5,10 +5,19 @@ import { BlackBtn } from '../../../components/commons/Btns'
 import { ColContainer, RowContainer } from '../../../components/commons/Container'
 import { BlackText } from '../../../components/commons/Font'
 import { Line } from '../../../components/commons/Line'
-
+import axios from 'axios'
 const ListContainer = ({contents, type}) => {
   console.log(contents);
-
+  const [isApproval, setIsApproval]=useState(false);
+  
+  const clickApproval=(id)=>{
+    axios.put(`/api/v1/admin/waiting/${id}`)
+    .then((res)=>{
+      setIsApproval(true);
+      console.log(res.data);
+    })
+   
+  } 
   return (
     <ColContainer>
       <MyGalleryContainer>
@@ -39,13 +48,20 @@ const ListContainer = ({contents, type}) => {
                     </div>
                 </LeftSection>
                 <RightSection>
-                        <BlackText weight={"500"} size={"15px"}>{content.exhibitionStartDate}</BlackText>
-                        <RowContainer>
-                                    <img src='../../imgs/heart.svg'></img>
-                                    <Num>{content.scrapCount}</Num>
-                                    <img src='../../imgs/comment.svg'></img>
-                                    <Num>{content.commentCount}</Num>
+                        <BlackText weight={"500"} size={"15px"}>{content.exhibitionStartDate.substring(0,10)}</BlackText>
+                        {
+                          type==="admin"
+                          ?
+                          <ApprovalBtn style={{margin: '10px 0 0 0'}} onClick={()=>clickApproval(content.exhibitionId)} color={isApproval===true ? 'black' : ''}>승인</ApprovalBtn>
+                          :
+                          <RowContainer>
+                            <img src='../../imgs/heart.svg'></img>
+                            <Num>{content.scrapCount}</Num>
+                            <img src='../../imgs/comment.svg'></img>
+                            <Num>{content.commentCount}</Num>
                           </RowContainer>
+                        }
+                       
                 </RightSection>
               </Content>
           </ContentContainer>

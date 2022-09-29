@@ -1,12 +1,13 @@
 import axios from 'axios'
 import React , {useState, useEffect}from 'react'
 import styled from 'styled-components'
+import { BorderBtn } from '../../components/commons/Btns'
 import { ColContainer, RowContainer } from '../../components/commons/Container'
 import { BlackText } from '../../components/commons/Font'
 import { Line } from '../../components/commons/Line'
 
 const QnA = () => {
-  const [display, setDisplay]=useState(false)
+  const [display, setDisplay]=useState([])
   const [content, setContent]=useState('');
   const [qna, setQna]=useState([]);
   useEffect(()=>{
@@ -14,10 +15,24 @@ const QnA = () => {
     .then((res)=>{
       console.log(res.data.data)
       setQna(res.data.data)
+      for (let i=0;i<res.data.count;i++){
+        display[i]=false;
+      }
     })
   },[])
-  const clickArrow=()=>{
-    setDisplay(!display);
+  const clickArrow=(id)=>{
+    console.log(id)
+    setDisplay(
+      display.map((ele,i)=>(
+      i===id 
+      ?
+      ele=!ele
+      :
+      ele=false
+    ))
+    )
+
+    //setDisplay(!display);
   }
   const onSubmit=(id)=>{
     axios.put('/api/v1/admin/qna',{
@@ -26,13 +41,14 @@ const QnA = () => {
     })
     .then((res)=>{
       console.log(res.data)
+      setDisplay(!display);
     })
   }
   return (
     <ColContainer>
     <QnAContainer>
       {
-        qna.map((q)=>(
+        qna.map((q,id)=>(
           <>
            <ContentContainer>
           <Left>
@@ -42,17 +58,27 @@ const QnA = () => {
           <Right>
             <BlackText size={"15px"}>{q.createdDate.substr(0,10)}</BlackText>
             {
-              display===true
-              ?
-              <Btn src='../../imgs/upArrow.svg' onClick={clickArrow}></Btn>
+              q.qnaAnswer ===null
+              ?(
+                
+                  display[id]===true
+                  ?
+                  <Btn src='../../imgs/upArrow.svg' onClick={()=>clickArrow(id)}></Btn>
+                  :
+                  <Btn src='../../imgs/downArrow.svg' onClick={()=>clickArrow(id)}></Btn>
+      
+              )
               :
-              <Btn src='../../imgs/downArrow.svg' onClick={clickArrow}></Btn>
-  
+              <>
+              <BorderBtn style={{backgroundColor:'#e4e4e4', border:'none'}}>답변작성완료</BorderBtn>
+              </>
+
             }
+            
             
           </Right>
         </ContentContainer>
-        <ExpandContainer display={display}>
+        <ExpandContainer display={display[id]}>
          
             <Input onChange={(e)=>setContent(e.target.value)}></Input>
             <SubmitBtn onClick={()=>{onSubmit(q.id)}}>작성 완료</SubmitBtn>
@@ -77,9 +103,11 @@ const ContentContainer=styled(RowContainer)`
   width: 90%;
   padding: 40px 0;
   justify-content: space-between;
+  
 `
 const Left=styled.div`
   width: 87%;
+  
 `
 const Right=styled(ColContainer)`
   width: 13%;

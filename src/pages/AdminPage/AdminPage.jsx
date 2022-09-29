@@ -13,20 +13,20 @@ const AdminPage = () => {
     const [user, setUser]=useState({})
     const [tab, setTab]=useState(1);
     useEffect(()=>{
-        axios.get('/api/v1/exhibition/user',{
+        axios.get('/api/v1/admin/waiting',{
       })
         .then((res)=>{
-        console.log(res.data)
-        setContents(res.data);
+        console.log(res.data.data)
+        setContents(res.data.data);
         })
         axios.get('/api/v1/user')
-        .then((res)=>setUser(res.data))
+        .then((res)=>{setUser(res.data)})
       },[])
       
     const ClickTab=()=>{
         switch(tab){
             case 1:
-                return <ListContainer contents={contents}/>
+                return <ListContainer contents={contents} type={'admin'}/>
             case 2: 
                 return <QnA/>
             case 3:
@@ -42,7 +42,7 @@ const AdminPage = () => {
                 <BlackText weight={500} size={"32px"}>마이페이지</BlackText>
             </TopSection>
             <ProfileSection>
-                <Img src="../../imgs/profileSample.svg"></Img>
+                <Img src={user.profileImage}></Img>
                 <div>
                     <BlackText size={"24px"} weight={500} style={{marginBottom:"10px"}}>{user.nickname}</BlackText>
                         <BlackText size={"20px"}>admin</BlackText>
