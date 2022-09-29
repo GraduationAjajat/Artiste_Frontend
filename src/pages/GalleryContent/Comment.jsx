@@ -14,10 +14,11 @@ const Comment = ({comments}) => {
         setAddComment(e.target.value);
     }
     const clickAdd=()=>{
+        console.log(addComment)
         axios.post('/api/v1/comment', 
             {
                 commentContent: addComment,
-                exhibitionId: 1
+                exhibitionId: id.id
             }
         )
         .then((res)=>{console.log(res.data); window.location.reload()})

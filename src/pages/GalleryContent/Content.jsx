@@ -22,6 +22,7 @@ const Content = () => {
     const [artList, setArtList]=useState([]);
     const [comment, setComment]=useState([]);
     const [follow, setFollow]=useState(false);
+    
     const ClickRadio=(e)=>{
         setView(e.target.value);
         if(color1!==''){
@@ -50,7 +51,7 @@ const Content = () => {
       if (follow===true){
         //팔로우 취소
         setFollow(!follow);
-        axios.delete(`/api/v1/follow/follower/${artist.id}`)
+        axios.delete(`/api/v1/follow/following/${artist.id}`)
         .then((res)=>console.log(res.data))
       }else{
         //팔로우 추가
@@ -64,11 +65,22 @@ const Content = () => {
     useEffect(()=>{
       axios.get(`/api/v1/exhibition/${params.id}`)
       .then((res)=>{
+        
           setContent(res.data);
           setArtist(res.data.exhibitionArtist);
           setArtList(res.data.artList);
+          console.log(res.data.exhibitionArtist);
+          axios.get(`/api/v1/follow/check/${res.data.exhibitionArtist.id}`)
+          .then((res)=>{
+            console.log(res.data)
+            if (res.data===true){
+              setFollow(true)
+            }else{
+              setFollow(false)
+            }
+          })
       })
-      .then(()=>console.log("artiste: "+artist))
+      
       axios.get(`/api/v1/comment/${params.id}`)
       .then((res)=>{
         console.log(res.data.data);
@@ -80,13 +92,7 @@ const Content = () => {
           setLike(true);
         }
       })
-      /*axios.get(`/api/v1/follow/check/${artist.id}`)
-      .then((res)=>{
-        if (res.data===true){
-          setFollow(true)
-          console.log(follow);
-        }
-      })*/
+
   },[])
 
   return (
@@ -133,9 +139,7 @@ const Content = () => {
           <Text>
             {content.exhibitionDesc}
           </Text>
-          <Link to={`/gallery/${params.id}`}>
-            <div style={{float: 'right'}}>전시회 상세 정보 보러가기 {'>'}{'>'}</div>  
-          </Link>
+         
           
         </ContentContainer>
         <Comment comments={comment}/>

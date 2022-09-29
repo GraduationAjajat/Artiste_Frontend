@@ -10,7 +10,7 @@ import axios from 'axios'
 const Profile = () => {
     const id=useParams();
     
-    const [contents, setContents]=useState([])
+    const [contents, setContents]=useState([{}])
     const token=localStorage.getItem("token")
     axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
     useEffect(()=>{
@@ -25,7 +25,11 @@ const Profile = () => {
     <ColContainer>
     <GalleryContainer>
         <TopContainer>
-            <GrayText size={"32px"}>{contents[0].exhibitionArtistName}<br/>GALLERY</GrayText>
+           
+        <GrayText size={"32px"}>{ contents[0].exhibitionArtistName}<br/>GALLERY</GrayText>
+            
+            
+            
             <GrayInput placeholder='전시회명을 검색해보세요!'></GrayInput>
         </TopContainer>
         <GridContainer>

@@ -86,29 +86,30 @@ const MyPage = () => {
                 <Img src={profile.profileImage}/>
                 <div>
                     <BlackText size={"24px"} weight={500} style={{marginBottom:"10px"}}>toquf0797</BlackText>
-                    <RowContainer style={{gap:"10px", }}>
+                    <RowContainer style={{gap:"15px",}} >
                         <img src='../../imgs/follow.svg'></img>
                         <BlackText weight={500} size={"20px"} onClick={()=>{setDisplay(!display); getFollower()}}>팔로워</BlackText>
                       
                         <BlackText weight={500} size={"20px"} >{followerCnt}</BlackText>
                         <BlackText weight={500} size={"20px"} onClick={()=>{setDisplay2(!display2); getFollow()}}>팔로우</BlackText>
                         <BlackText weight={500} size={"20px"}>{followingCnt}</BlackText>
+                        
                     </RowContainer>
                     <DropDown display={display} onChange={(e)=>{ clickFollower(e.target.value)}}>
-                        <option>팔로워 목록</option>
+                        <option>팔로워</option>
                         {follower.map((obj , i)=>(
                             <option>{obj.nickname}</option> 
                         ))}
                             
-                    </DropDown>
-                    <DropDown display={display2} onChange={(e)=>{ clickFollow(e.target.value)}} style={{float: "right", marginLeft:"0px"}} >
-                        <option>팔로우 목록</option>
-                        {
-                            follow.map((obj)=>(
-                                <option>{obj.nickname}</option>
-                            ))
-                        }
-                    </DropDown>
+                        </DropDown>
+                        <DropDown display={display2} onChange={(e)=>{ clickFollow(e.target.value)}} style={{float: "right", marginLeft:"0px"}} >
+                            <option>팔로우</option>
+                            {
+                                follow.map((obj)=>(
+                                    <option>{obj.nickname}</option>
+                                ))
+                            }
+                        </DropDown>
                 </div>
             </ProfileSection>
             <ColContainer style={{width:"80%"}}>
@@ -170,8 +171,10 @@ const ContentContainer=styled.div`
 `
 const DropDown=styled.select`
     display: ${(props)=>(props.display === true ? '' :'none' )};
-    margin-left: 35px;
-    width: 37%;
-    margin-top: 10px;
+    margin-left: 40px;
+    width: 35%;
+    
+    
+    margin-top: 15px;
     height: 30px;
 `
