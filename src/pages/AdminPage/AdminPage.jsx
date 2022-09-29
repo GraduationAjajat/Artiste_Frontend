@@ -6,13 +6,27 @@ import ListContainer from '../MyPage/commons/ListContainer'
 import QnA from './QnA'
 import Edit from './Edit'
 import User from './User'
+import { useEffect } from 'react'
+import axios from 'axios'
 const AdminPage = () => {
+    const [contents, setContents]=useState([])
+    const [user, setUser]=useState({})
     const [tab, setTab]=useState(1);
-
+    useEffect(()=>{
+        axios.get('/api/v1/exhibition/user',{
+      })
+        .then((res)=>{
+        console.log(res.data)
+        setContents(res.data);
+        })
+        axios.get('/api/v1/user')
+        .then((res)=>setUser(res.data))
+      },[])
+      
     const ClickTab=()=>{
         switch(tab){
             case 1:
-                return <ListContainer/>//props로 admiin 페이지임을 알려주기 
+                return <ListContainer contents={contents}/>
             case 2: 
                 return <QnA/>
             case 3:
@@ -30,7 +44,7 @@ const AdminPage = () => {
             <ProfileSection>
                 <Img src="../../imgs/profileSample.svg"></Img>
                 <div>
-                    <BlackText size={"24px"} weight={500} style={{marginBottom:"10px"}}>toquf0797</BlackText>
+                    <BlackText size={"24px"} weight={500} style={{marginBottom:"10px"}}>{user.nickname}</BlackText>
                         <BlackText size={"20px"}>admin</BlackText>
                 </div>
             </ProfileSection>
