@@ -13,12 +13,14 @@ const GalleryInfo = () => {
     const [content, setContent]=useState({});
     const [artist, setArtist]=useState({});
     const [galleryArr, setGalleryArr]=useState([]);
+    const [art, setArt]=useState({})
     useEffect(()=>{
         axios.get(`/api/v1/exhibition/${id.id}`)
         .then((res)=>{
             console.log(res.data);
             setContent(res.data);
             setArtist(res.data.exhibitionArtist)
+            setArt(res.data.artList[0])
         })
         axios.get(`/api/v1/exhibition/artist/${id.id}`)
         .then((res)=>{
@@ -34,7 +36,7 @@ const GalleryInfo = () => {
             </TopContainer>
             <ContentContainer>
                 <Left>
-                    <Img src='../../imgs/sampleImg.png'></Img>
+                    <Img src={art.artImage}></Img>
                 </Left>
                 <Right>
                     <BlackText size={"32px"} weight={"700"}>{content.exhibitionName}</BlackText>
